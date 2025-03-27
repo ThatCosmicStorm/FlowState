@@ -155,12 +155,14 @@ if focus_num > 0:
         break_s = "s"
 
     print(f"\n{line}\n")
-    print(f"FlowTimer Stats:{n}You focused for {pretty24(tot_focus_hours)}h, "
+    input(f"FlowTimer Stats:{n}You focused for {pretty24(tot_focus_hours)}h, "
           f"{pretty60(tot_focus_min)}m, {pretty60(tot_focus_sec)}s over "
           f"{focus_num} focus session{session_s}.{n}You spent "
           f"{pretty24(tot_break_hours)}h, {pretty60(tot_break_min)}m, 0s over "
-          f"{break_num} break{break_s}.{n}FlowTimer ended!{n}{line}\n")
+          f"{break_num} break{break_s}.{n}Done reading?\nPress ENTER to fully"
+          " end FlowTimer.\n")
 
 
 elif focus_num == 0:
-    print(f"\n{n}{line}{n}No stats to show.{n}FlowTimer ended!{n}{line}\n")
+    input(f"\n{n}{line}{n}No stats to show.{n}Done reading?\nPress ENTER to"
+          " fully end FlowTimer.\n")

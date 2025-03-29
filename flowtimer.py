@@ -44,7 +44,7 @@ while v.lower() != "q":
     focus_num += 1
 
     print(N_LINE)
-    print(f"Focus Session #{focus_num} has STARTED!\n")
+    print(f"Focus Session #{focus_num} has STARTED!")
     print("You are being TIMED.\n")
     print(f"Remember: your focus is on {(main_topic).upper()}.\n")
     v = input("Press ENTER to end this focus session.")
@@ -74,16 +74,12 @@ while v.lower() != "q":
     if focus_num%4 == 0:
         print("\nYou have completed four focus sessions, so you get a longer"
               " break!")
-
-    idle = time.time()
-
+        
     print("\nPress ENTER to begin your break.")
     q_enter()
 
     if v.lower() == "q":
         break
-
-    idle_sec += time.time() - idle
 
     tot_break_sec += break_sec
 
@@ -105,13 +101,9 @@ while v.lower() != "q":
     print("\n"+N_LINE)
     print(f"Break #{break_num} has ENDED!\n")
 
-    idle = time.time()
-
     # Break timer
     print("Press ENTER to start a new focus session.")
     q_enter()
-
-    idle_sec += time.time() - idle
 
 
 def done_read():

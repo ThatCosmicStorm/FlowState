@@ -6,7 +6,6 @@ N = "\n\n"
 LINE = "*" * 20
 N_LINE = f"\n{LINE}\n"
 v = ""
-q = True
 idle_sec = 0
 focus_num = 0
 break_num = 0

@@ -6,15 +6,15 @@
 - Excludes idle time from total focus time
 - Shows accurate statistics at program end
 - Displays all focus and break times accurately
-- Able to exit program at any time except during a break
-- Waits for input (usually ENTER key) to start any focus session or break
+- Able to exit program after a focus session or break
+- Waits for input (ENTER key) to start any focus session or break
+- Sets a "main focus" and gives reminders every focus session
 ## Future
 ### Being developed
-- Set a "main focus" and give reminders every focus session
 - Allows manual logging of what exactly was done during a focus session
 ### Awaiting development
 - Ability to pause/skip a break
-- Show time spent focusing while in a focus session
+- Show time spent focusing while inside a focus session
 - Play a sound to denote that a break has ended
 - Log stats of each focus session and total stats in a text file
 # Basics

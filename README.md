@@ -12,11 +12,11 @@
 - Allows manual logging of what exactly was done during a focus session
 - Better printing system that avoids clogging the terminal
 - Automatically logs all stats in a new text file
+- Play a sound to denote that a break has ended
 ## Future
 ### Being developed
-- Play a sound to denote that a break has ended
-### Awaiting development
 - Ability to pause/skip a break
+### Awaiting development
 - Show time spent focusing while inside a focus session
 # Basics
 ## Idea

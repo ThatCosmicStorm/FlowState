@@ -14,6 +14,8 @@ session_s = ""
 break_s = ""
 tot_focus_sec = 0
 tot_break_sec = 0
+you_did = {}
+you_spent = {}
 
 
 def pretty(x):
@@ -31,11 +33,11 @@ def q_enter():
 
 
 print(f"{N * 3}Welcome to FlowTimer!\n")
-print("What do you plan to focus on today?\n")
+print("What do you plan to focus on today?")
 main_topic = input("I plan to focus on... ")
 
 print(N_LINE)
-print("Press ENTER to start a focus session.")
+v = input("Press ENTER to start a focus session.")
 
 while v.lower() != "q":
 
@@ -55,11 +57,19 @@ while v.lower() != "q":
     print(N_LINE)
     print(f"Focus Session #{focus_num} has ENDED!")
     print("\nSession length:")
-    print(f"{display_time(focus_sec)}{N}{LINE}")
+    print(display_time(focus_sec) + N + LINE)
 
     if focus_num > 1:
         print("\nTOTAL time spent in focus sessions:")
-        print(f"{display_time(tot_focus_sec)}{N}{LINE}")
+        print(display_time(tot_focus_sec) + N + LINE)
+
+    print("\nWhat did you do during the focus session?")
+
+    if focus_num == 1:
+        print("Ex. studied for unit exam, took notes of lectures, etc.\n")
+
+    you_spent[focus_num] = display_time(focus_sec)
+    you_did[focus_num] = input("During the focus session, I... ")
 
     if focus_sec < 10*60: break_sec = 1*60
     elif focus_sec < 25*60: break_sec = 5*60
@@ -69,11 +79,12 @@ while v.lower() != "q":
 
     if focus_num%4 == 0: break_sec *= 3*60
 
-    print(f"\nYou deserve a {int(break_sec / 60)} minute break!")
+    print(N_LINE)
+    print(f"You deserve a {int(break_sec / 60)} minute break!")
 
     if focus_num%4 == 0:
-        print("\nYou have completed four focus sessions, so you get a longer"
-              " break!")
+        print("\nYou have completed four focus sessions,"
+              "so you get a longer break!")
         
     print("\nPress ENTER to begin your break.")
     q_enter()
@@ -87,6 +98,7 @@ while v.lower() != "q":
 
     print(N_LINE)
     print(f"Break #{break_num} has STARTED!\n")
+    print("WARNING: DO NOT PRESS ENTER UNTIL BREAK HAS ENDED.\n")
     print("Break time left:")
 
     timer_sec = break_sec
@@ -101,7 +113,6 @@ while v.lower() != "q":
     print("\n"+N_LINE)
     print(f"Break #{break_num} has ENDED!\n")
 
-    # Break timer
     print("Press ENTER to start a new focus session.")
     q_enter()
 
@@ -116,12 +127,21 @@ if focus_num > 0:
     if break_num > 1: break_s = "s"
 
     print(N_LINE)
-    print(f"FlowTimer Stats:\n")
-    print(f"Your main focus was on {(main_topic).upper()}.\n")
+    print(f"TOTAL Stats:\n")
     print(f"You focused for {display_time(tot_focus_sec)} over {focus_num}"
-          f" focus session{session_s}.\n")
+          f" focus session{session_s}.")
     print(f"And you spent {display_time(tot_break_sec)} over {break_num} break"
-          f"{break_s}.\n")
+          f"{break_s}.")
+    
+    print(N_LINE)
+    print("Session-by-session Stats:\n")
+    print(f"Your main focus was on {(main_topic).upper()}.\n")
+
+    for session in range(1, focus_num + 1):
+        print(f"Focus Session #{session}:")
+        print(f"You focused for {you_spent[session]} during this session.")
+        print(f"You wrote down \"I {you_did[session]}\".\n")
+
     done_read()
 
 

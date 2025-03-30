@@ -9,9 +9,13 @@
 - Able to exit program after a focus session or break
 - Waits for input (ENTER key) to start any focus session or break
 - Sets a "main focus" and gives reminders every focus session
+- Allows manual logging of what exactly was done during a focus session
 ## Future
 ### Being developed
-- Allows manual logging of what exactly was done during a focus session
+- Better printing system to avoid clogging the terminal
+    - Writes over inessential info
+    - Keeps important info up
+    - Cleaner separations between chunks of info
 ### Awaiting development
 - Ability to pause/skip a break
 - Show time spent focusing while inside a focus session

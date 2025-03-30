@@ -10,17 +10,14 @@
 - Waits for input (ENTER key) to start any focus session or break
 - Sets a "main focus" and gives reminders every focus session
 - Allows manual logging of what exactly was done during a focus session
+- Better printing system that avoids clogging the terminal
 ## Future
 ### Being developed
-- Better printing system to avoid clogging the terminal
-    - Writes over inessential info
-    - Keeps important info up
-    - Cleaner separations between chunks of info
+- Automatically log all stats in a text file
 ### Awaiting development
 - Ability to pause/skip a break
 - Show time spent focusing while inside a focus session
 - Play a sound to denote that a break has ended
-- Log stats of each focus session and total stats in a text file
 # Basics
 ## Idea
 - Based on Flowtime and Pomodoro techniques

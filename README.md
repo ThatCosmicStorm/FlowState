@@ -11,13 +11,13 @@
 - Sets a "main focus" and gives reminders every focus session
 - Allows manual logging of what exactly was done during a focus session
 - Better printing system that avoids clogging the terminal
+- Automatically logs all stats in a new text file
 ## Future
 ### Being developed
-- Automatically log all stats in a text file
+- Play a sound to denote that a break has ended
 ### Awaiting development
 - Ability to pause/skip a break
 - Show time spent focusing while inside a focus session
-- Play a sound to denote that a break has ended
 # Basics
 ## Idea
 - Based on Flowtime and Pomodoro techniques

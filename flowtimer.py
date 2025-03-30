@@ -1,7 +1,7 @@
 import time
 import os
+from datetime import timedelta, datetime
 from math import floor
-from datetime import timedelta
 
 N = "\n\n"
 LINE = "*" * 20
@@ -11,17 +11,20 @@ idle_sec = 0
 focus_num = 0
 break_num = 0
 break_sec = 0
-session_s = ""
-break_s = ""
+session_s = "s"
+break_s = "s"
 tot_focus_sec = 0
 tot_break_sec = 0
 you_did = {}
 you_spent = {}
 
-
 def clear_and_print(text):
-    os.system("cls" if os.name == "nt" else "clear")
-    print(text)
+    if os.name == "nt":
+        os.system("cls")
+    else:
+        os.system("clear")
+
+    return print(text)
 
 
 def pretty_print(x):
@@ -146,28 +149,45 @@ def done_read():
 
 
 if focus_num > 0:
-    if focus_num > 1: session_s = "s"
-    if break_num > 1: break_s = "s"
 
-    print2(f"TOTAL Stats:\n")
+    def write(x):
+        file.write(x)
+        return print(x)
 
-    print(f"You focused for {display_time(tot_focus_sec)} over {focus_num}"
-          f" focus session{session_s}.")
-    print(f"And you spent {display_time(tot_break_sec)} over {break_num} break"
-          f"{break_s}.")
-    
-    print(N_LINE)
-    print("Session-by-session Stats:\n")
-    print(f"Your main focus was on {(main_topic).upper()}.\n")
+    new_file = datetime.isoformat(datetime.now())
+    new_file = new_file[:19].replace(":",".").replace("T","_") + ".txt"
+    file = open(new_file, "a")
+
+    if focus_num == 1: session_s = ""
+    if break_num == 1: break_s = ""
+
+    print2(f"{new_file} has been created.\n")
+
+    write(
+        f"{LINE}{N}TOTAL Stats:{N}"
+        f"You focused for {display_time(tot_focus_sec)} over {focus_num}"
+        f" focus session{session_s}.\n"
+        f"And you spent {display_time(tot_break_sec)} over {break_num} break"
+        f"{break_s}.\n"
+        f"{N_LINE}\n"
+        f"Session-by-session Stats:{N}"
+        f"Your main focus was on {(main_topic).upper()}.{N}"
+    )
 
     for session in range(1, focus_num + 1):
-        print(f"Focus Session #{session}:")
-        print(f"You focused for {you_spent[session]} during this session.")
-        print(f"You wrote down \"I {you_did[session]}\".\n")
+        write(
+            f"Focus Session #{session}:\n"
+            f"You focused for {you_spent[session]} during this session.\n"
+            f"You wrote down \"I {you_did[session]}\".{N}"
+        )
+
+    file.close()
+
+    print(f"{LINE}{N}All stats have been recorded and stored in {new_file}\n")
 
     done_read()
 
 
 else:
-    print2("No stats to show.\n")
+    print2("No stats were recorded.\n")
     done_read()

@@ -18,10 +18,11 @@ tot_focus_sec = 0
 tot_break_sec = 0
 you_did = {}
 you_spent = {}
+alarm_path = __file__[:-12] + "breakalarm.wav"
 
 mixer.init()
 
-breakalarm = mixer.Sound("breakalarm.wav")
+breakalarm = mixer.Sound(alarm_path)
 
 def clear_and_print(text):
     if os.name == "nt":

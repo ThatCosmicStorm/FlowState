@@ -1,5 +1,6 @@
 import time
 import os
+from pygame import mixer
 from datetime import timedelta, datetime
 from math import floor
 
@@ -17,6 +18,10 @@ tot_focus_sec = 0
 tot_break_sec = 0
 you_did = {}
 you_spent = {}
+
+mixer.init()
+
+breakalarm = mixer.Sound("breakalarm.wav")
 
 def clear_and_print(text):
     if os.name == "nt":
@@ -46,7 +51,6 @@ def display_time(x):
 def q_enter():
     global v
     v = input("Type Q and press ENTER to end FlowTimer and get stats.")
-
 
 print2(
     f"Welcome to FlowTimer!{N}"
@@ -134,6 +138,8 @@ while v.lower() != "q":
         time.sleep(1)
         timer_sec -= 1
         # Actual timer
+
+    mixer.Sound.play(breakalarm)
 
     print2(
         f"Break #{break_num} has ENDED!{N}"

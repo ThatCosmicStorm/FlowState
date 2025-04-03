@@ -25,11 +25,7 @@ mixer.init()
 breakalarm = mixer.Sound(alarm_path)
 
 def clear_and_print(text):
-    if os.name == "nt":
-        os.system("cls")
-    else:
-        os.system("clear")
-
+    os.system("cls" if os.name == "nt" else "clear")
     return print(text)
 
 
@@ -112,14 +108,15 @@ while v.lower() != "q":
     print2(f"You deserve a {int(break_sec / 60)} minute break.")
 
     if focus_num%4 == 0:
-        print("\nYou have completed four focus sessions,"
-              "so you get a longer break!")
+        print(
+            "\nYou have completed four focus sessions,"
+            "so you get a longer break!"
+        )
         
     print("\nPress ENTER to begin your break.")
     q_enter()
 
-    if v.lower() == "q":
-        break
+    if v.lower() == "q": break
 
     tot_break_sec += break_sec
 
@@ -157,18 +154,25 @@ def done_read():
 
 if focus_num > 0:
 
-    def write(x):
-        file.write(x)
-        return print(x)
+    print2(
+        f"Would you like to save your stats in a new text file?{N}"
+        "Type Y and press ENTER to save. Just press ENTER to not save."
+    )
 
-    new_file = datetime.isoformat(datetime.now())
-    new_file = new_file[:19].replace(":",".").replace("T","_") + ".txt"
-    file = open(new_file, "a")
+    save_stats = input().lower()
+
+    if save_stats == "y":
+        new_file = datetime.isoformat(datetime.now())
+        new_file = new_file[:19].replace(":",".").replace("T","_") + ".txt"
+        file = open(new_file, "a")
+        print2(f"{new_file} has been created.\n")
+
+    def write(x):
+        if save_stats == "y": file.write(x)
+        return print(x)
 
     if focus_num == 1: session_s = ""
     if break_num == 1: break_s = ""
-
-    print2(f"{new_file} has been created.\n")
 
     write(
         f"{LINE}{N}TOTAL Stats:{N}"
@@ -188,9 +192,9 @@ if focus_num > 0:
             f"You wrote down \"I {you_did[session]}\".{N}"
         )
 
-    file.close()
-
-    print(f"{LINE}{N}All stats have been recorded and stored in {new_file}\n")
+    if save_stats == "y":
+        file.close()
+        print(f"{LINE}{N}All stats have been recorded and stored in {new_file}\n")
 
     done_read()
 

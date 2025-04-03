@@ -1,23 +1,25 @@
 # Features
 ## Current
-- Takes note of focus time
+### Basic
+- Takes note of time spent in focus sessions
 - Allots appropriate break time
-- Working timer
-- Excludes idle time from total focus time
-- Shows accurate statistics at program end
+- Working timer for breaks
 - Displays all focus and break times accurately
 - Able to exit program after a focus session or break
 - Waits for input (ENTER key) to start any focus session or break
 - Sets a "main focus" and gives reminders every focus session
+- Clog-free print function
+- Plays a sound to denote that a break has ended
+### Stats/Logs
+- Shows accurate statistics at program end
 - Allows manual logging of what exactly was done during a focus session
-- Better printing system that avoids clogging the terminal
 - Automatically logs all stats in a new text file
-- Play a sound to denote that a break has ended
+    - Provides option to not log stats
 ## Future
 ### Being developed
-- Ability to pause/skip a break
-### Awaiting development
 - Show time spent focusing while inside a focus session
+### Awaiting development
+- Ability to pause/skip a break
 # Basics
 ## Idea
 - Based on Flowtime and Pomodoro techniques

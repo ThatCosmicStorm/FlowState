@@ -1,166 +1,204 @@
 import time
+import os
+from pygame import mixer
+from datetime import timedelta, datetime
 from math import floor
-from datetime import timedelta
 
+N = "\n\n"
+LINE = "*" * 20
+N_LINE = f"\n{LINE}\n"
 v = ""
-n = "\n\n"
-line = "*" * 20
 idle_sec = 0
 focus_num = 0
 break_num = 0
-break_min = 0
-tot_break_min = 0
-no_break = False
+break_sec = 0
+session_s = "s"
+break_s = "s"
+tot_focus_sec = 0
+tot_break_sec = 0
+you_did = {}
+you_spent = {}
+alarm_path = __file__[:-12] + "breakalarm.wav"
 
-v = input(f"{n * 3}Welcome to FlowTimer!{n}Press ENTER to start a focus"
-          f" session.{n}Type Q and press ENTER to end FlowTimer and get your"
-          " statistics.\n")
+mixer.init()
 
-flow_start = time.time()
-# Takes a snapshot of the time at the start of the FIRST focus session
+breakalarm = mixer.Sound(alarm_path)
 
+def clear_and_print(text):
+    os.system("cls" if os.name == "nt" else "clear")
+    return print(text)
+
+
+def pretty_print(x):
+    return LINE + N + x
+
+
+def print2(x):
+    return clear_and_print(pretty_print(x))
+
+
+def display(x):
+    return floor(x) % 60
+
+
+def display_time(x):
+    return (f"{display(x / 60 / 60)}h, {display(x / 60)}m, {display(x)}s")
+
+
+def q_enter():
+    global v
+    v = input("Type Q and press ENTER to end FlowTimer and get stats.")
+
+print2(
+    f"Welcome to FlowTimer!{N}"
+    f"What do you plan to focus on today?{N}"
+    "I plan to focus on..."
+)
+
+main_topic = input()
+
+print2("Press ENTER to start a focus session.")
+
+v = input()
 
 while v.lower() != "q":
-    # As long as Q has not been entered, the flowtimer will work
-
-    if v.lower() == "q":
-        break
-        # Loop stop
 
     focus_start = time.time()
-    # Takes a snapshot of the time at the start of the CURRENT focus session
-
-    v = input(f"{line}{n}Focus Session #{focus_num + 1} has STARTED!{n}You"
-              f" are CURRENTLY being timed.{n}Press ENTER to end this focus"
-              " session.\n")
-
-    if v.lower() == "q":
-        break
 
     focus_num += 1
-    focus_sec = time.time() - focus_start
-    focus_min = focus_sec / 60
-    focus_hours = focus_min / 60
 
-    tot_focus_sec = ((time.time() - flow_start) - (break_min * 60)
-                     - (idle_sec))
-    tot_focus_min = tot_focus_sec / 60
-    tot_focus_hours = tot_focus_min / 60
+    print2(
+        f"Focus Session #{focus_num} has STARTED!\n"
+        f"You are being TIMED.{N}"
+        f"Remember: your focus is on {(main_topic).upper()}.{N}"
+        "Press ENTER to end this focus session."
+    )
 
-    print(f"{line}{n}Focus Session #{focus_num} has ENDED!")
+    v = input()
 
-    def pretty24(x):
-        y = str((floor(x) % 24))
-        return y
+    focus_sec = floor(time.time() - focus_start)
+    tot_focus_sec += focus_sec
 
-    def pretty60(x):
-        y = str((floor(x) % 60))
-        return y
+    print2(
+        f"Focus Session #{focus_num} has ENDED!{N}"
+        "Session length:\n"
+        f"{display_time(focus_sec)}"
+    )
 
-    idle = time.time()
+    if focus_num > 1:
+        print("\nTOTAL time spent in focus sessions:")
+        print(display_time(tot_focus_sec) + N + LINE)
+
+    print("\nWhat did you do during the focus session?")
 
     if focus_num == 1:
-        print("\nSession length:")
-        print(f"{pretty24(focus_hours)}h, {pretty60(focus_min)}m, "
-              f"{pretty60(focus_sec)}s{n}{line}")
+        print("Ex. studied for unit exam, took notes of lectures, etc.\n")
 
-    else:
-        print("\nSession length:")
-        print(f"{pretty24(focus_hours)}h, {pretty60(focus_min)}m, "
-              f"{pretty60(focus_sec)}s{n}TOTAL time spent in focus sessions:")
-        print(f"{pretty24(tot_focus_hours)}h, {pretty60(tot_focus_min)}m, "
-              f"{pretty60(tot_focus_sec)}s{n}{line}")
+    you_spent[focus_num] = display_time(focus_sec)
+    you_did[focus_num] = input("During the focus session, I... ")
 
-    idle_sec += time.time() - idle
+    if focus_sec < 10*60: break_sec = 1*60
+    elif focus_sec < 25*60: break_sec = 5*60
+    elif focus_sec < 50*60: break_sec = 10*60
+    elif focus_sec < 1.5*60*60: break_sec = 15*60
+    else: break_sec = 20*60
 
-    if focus_hours < 1:
-        if focus_min < 10:
-            break_min = 1
-        elif 10 < focus_min < 25:
-            break_min = 5
-        elif 25 <= focus_min < 50:
-            break_min = 10
-        elif 50 <= focus_min < 60:
-            break_min = 15
+    if focus_num%4 == 0: break_sec *= 3*60
 
-    else:
-        if focus_min < 30:
-            break_min = 15
-        elif focus_min >= 30:
-            break_min = 20
+    print2(f"You deserve a {int(break_sec / 60)} minute break.")
 
-    if focus_num % 4 == 0:
-        break_min *= 3
+    if focus_num%4 == 0:
+        print(
+            "\nYou have completed four focus sessions,"
+            "so you get a longer break!"
+        )
+        
+    print("\nPress ENTER to begin your break.")
+    q_enter()
 
-    tot_break_min += break_min
+    if v.lower() == "q": break
 
-    if focus_num % 4 != 0:
-        print(f"\nYou deserve a {break_min} minute break!")
-
-    else:
-        print(f"\nYou have completed four focus sessions, so you get a"
-              f"longer break!{n}You deserve a {break_min} minute break!")
-
-    idle = time.time()
-
-    v = input(f"\nPress ENTER to begin your break.")
-
-    if v.lower() == "q":
-        no_break = True
-        break
-
-    idle_sec += time.time() - idle
+    tot_break_sec += break_sec
 
     break_num += 1
 
-    print(f"\n{line}{n}Break #{break_num} has STARTED!{n}Break Time Left:")
+    print2(
+        f"Break #{break_num} has STARTED!{N}"
+        f"WARNING: DO NOT PRESS ENTER UNTIL BREAK HAS ENDED.{N}"
+        "Break time left:"
+    )
 
-    timer_sec = break_min * 60
+    timer_sec = break_sec
 
-    while timer_sec > 0:
+    while timer_sec > -1:
         timer = timedelta(seconds=timer_sec)
         print(timer, end="\r")
         time.sleep(1)
         timer_sec -= 1
         # Actual timer
 
-    print(f"{n}{line}{n}Break #{break_num} has ENDED!")
+    mixer.Sound.play(breakalarm)
 
-    idle = time.time()
+    print2(
+        f"Break #{break_num} has ENDED!{N}"
+        "Press ENTER to start a new focus session."
+    )
 
-    v = input("\nPress ENTER to start a new focus session.\n")
-    # Break timer
+    q_enter()
 
-    if v.lower() == "q":
-        break
 
-    idle_sec += time.time() - idle
+def done_read():
+    print("Done reading?")
+    input("Press ENTER to fully end FlowTimer.\n")
 
 
 if focus_num > 0:
 
-    if no_break:
-        tot_break_min -= break_min
+    print2(
+        f"Would you like to save your stats in a new text file?{N}"
+        "Type Y and press ENTER to save. Just press ENTER to not save."
+    )
 
-    tot_break_hours = tot_break_min / 60
+    save_stats = input().lower()
 
-    if focus_num == 1:
-        session_s = ""
-    else:
-        session_s = "s"
+    if save_stats == "y":
+        new_file = datetime.isoformat(datetime.now())
+        new_file = new_file[:19].replace(":",".").replace("T","_") + ".txt"
+        file = open(new_file, "a")
+        print2(f"{new_file} has been created.\n")
 
-    if break_num == 1:
-        break_s = ""
-    else:
-        break_s = "s"
+    def write(x):
+        if save_stats == "y": file.write(x)
+        return print(x)
 
-    print(f"\n{line}\n")
-    print(f"FlowTimer Stats:{n}You focused for {pretty24(tot_focus_hours)}h, "
-          f"{pretty60(tot_focus_min)}m, {pretty60(tot_focus_sec)}s over "
-          f"{focus_num} focus session{session_s}.{n}You spent "
-          f"{pretty24(tot_break_hours)}h, {pretty60(tot_break_min)}m, 0s over "
-          f"{break_num} break{break_s}.{n}FlowTimer ended!{n}{line}\n")
+    if focus_num == 1: session_s = ""
+    if break_num == 1: break_s = ""
+
+    write(
+        f"{LINE}{N}TOTAL Stats:{N}"
+        f"You focused for {display_time(tot_focus_sec)} over {focus_num}"
+        f" focus session{session_s}.\n"
+        f"And you spent {display_time(tot_break_sec)} over {break_num} break"
+        f"{break_s}.\n"
+        f"{N_LINE}\n"
+        f"Session-by-session Stats:{N}"
+        f"Your main focus was on {(main_topic).upper()}.{N}"
+    )
+
+    for session in range(1, focus_num + 1):
+        write(
+            f"Focus Session #{session}:\n"
+            f"You focused for {you_spent[session]} during this session.\n"
+            f"You wrote down \"I {you_did[session]}\".{N}"
+        )
+
+    if save_stats == "y":
+        file.close()
+        print(f"{LINE}{N}All stats have been recorded and stored in {new_file}\n")
+
+    done_read()
 
 
-elif focus_num == 0:
-    print(f"\n{n}{line}{n}No stats to show.{n}FlowTimer ended!{n}{line}\n")
+else:
+    print2("No stats were recorded.\n")
+    done_read()

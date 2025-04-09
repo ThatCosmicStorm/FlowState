@@ -1,6 +1,86 @@
-import time
+import pygame as pg
+
+def main():
+    # Initialize everything
+    pg.init()
+    screen = pg.display.set_mode((375, 410))
+    pg.display.set_caption("FlowTimer")
+    pg.mouse.set_visible(True)
+
+    # Create background
+    bg = pg.Surface(screen.get_size())
+    bg = bg.convert()
+    bg_color = (170, 238, 187)
+    bg.fill(bg_color)
+
+    def font(string, size, color, type=None):
+        """
+        This function declutters rendering multiple lines of text.
+        """
+
+        if pg.font:
+            font = pg.font.Font(None, size)
+            text = font.render(string, True, color, bg_color)
+            if type == "title":
+                textpos = text.get_rect(centerx=(bg.get_width() / 2), y=10)
+            bg.blit(text, textpos)
+
+    # Prepare objects
+    clock = pg.time.Clock()
+
+    # Main loop
+    running = True
+    while running:
+        clock.tick(60)
+
+        # Handle inputs
+        for event in pg.event.get():
+            if event.type == pg.QUIT: running = False
+
+        font("FlowTimer", 64, (0,0,0), "title")
+
+        # Draw everything
+        screen.blit(bg, (0, 0))
+        pg.display.flip()
+
+
+if __name__ == "__main__": main()
+
+
+pg.quit()
+
+exit()
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 import os
-from pygame import mixer
+import time
 from datetime import timedelta, datetime
 from math import floor
 
@@ -20,9 +100,9 @@ you_did = {}
 you_spent = {}
 alarm_path = __file__[:-12] + "breakalarm.wav"
 
-mixer.init()
+pg.mixer.init()
 
-breakalarm = mixer.Sound(alarm_path)
+breakalarm = pg.mixer.Sound(alarm_path)
 
 def clear_and_print(text):
     os.system("cls" if os.name == "nt" else "clear")
@@ -137,7 +217,7 @@ while v.lower() != "q":
         timer_sec -= 1
         # Actual timer
 
-    mixer.Sound.play(breakalarm)
+    pg.mixer.Sound.play(breakalarm)
 
     print2(
         f"Break #{break_num} has ENDED!{N}"

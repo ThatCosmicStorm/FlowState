@@ -26,16 +26,15 @@ def place_canvas() -> tk.Canvas:
     """
     Places a background canvas.
     """
-    screen_width =root.winfo_screenwidth()
-    screen_height = root.winfo_screenheight()
 
     bg = tk.Canvas(
         root,
-        width=screen_width,
-        height=screen_height,
-        bg="navy",
+        width=360,
+        height=360,
+        bg="white",
         highlightthickness=0
     )
+
     bg.place(x=0, y=0)
 
     return bg

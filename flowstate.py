@@ -4,6 +4,7 @@ Contains the functions that run FlowState.
 
 import os
 import tkinter as tk
+from datetime import timedelta
 
 PADDING = "-200+200"
 
@@ -26,7 +27,6 @@ def place_canvas() -> tk.Canvas:
     """
     Places a background canvas.
     """
-
     bg = tk.Canvas(
         root,
         width=360,
@@ -38,6 +38,36 @@ def place_canvas() -> tk.Canvas:
     bg.place(x=0, y=0)
 
     return bg
+
+
+class TimeText:
+    """
+    The text for the stopwatch.
+    """
+    def __init__(self) -> None:
+        self.focus_sec = 0
+        self.label = tk.Label(
+            root,
+            text="0:00:00",
+            font=("Tahoma", 64)
+        )
+
+        self.label.place(x=180, y=150, anchor="center")
+
+    def time_string(self) -> str:
+        """
+        Adds a second to the timer and styles it with timedelta.
+        """
+        self.focus_sec += 1
+        display_time = timedelta(seconds=self.focus_sec)
+        return str(display_time)
+
+    def update(self) -> None:
+        """
+        Updates the label to display the new time.
+        """
+        self.label.configure(text=self.time_string())
+        self.label.after(1000, self.update)
 
 
 def settings_menu():
@@ -63,7 +93,7 @@ def settings_menu():
 
 def main():
     """
-    main program
+    The main program.
     """
     root.title("FlowState")
     root.geometry(f"360x360{PADDING}")
@@ -71,6 +101,9 @@ def main():
     root.attributes("-topmost", 1)
 
     place_canvas()
+
+    stopwatch = TimeText()
+    stopwatch.label.after(1000, stopwatch.update)
 
     settings_menu()
 

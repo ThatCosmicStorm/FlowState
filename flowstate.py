@@ -15,8 +15,11 @@ def img(image) -> tk.PhotoImage:
     Load an image and return it as a PhotoImage object.
     """
     if os.name == "nt":
-        return tk.PhotoImage(file=f".\\Images\\{image}")
-    return tk.PhotoImage(file=f"./Images/{image}")
+        directory = f".\\Images\\{image}"
+    else:
+        directory = f"./Images/{image}"
+
+    return tk.PhotoImage(file=directory)
 
 
 def place_canvas() -> tk.Canvas:

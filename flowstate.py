@@ -11,7 +11,7 @@ PADDING = "-200+200"
 root = tk.Tk()
 
 
-def img(image) -> tk.PhotoImage:
+def img(image: str) -> tk.PhotoImage:
     """
     Load an image and return it as a PhotoImage object.
     """
@@ -70,9 +70,9 @@ class TimeText:
         self.label.after(1000, self.update)
 
 
-def settings_menu():
+def settings_menu() -> None:
     """
-    settings_menu
+    Adds settings menu with options.
     """
     menubar = tk.Menu(root)
     root.config(menu=menubar)
@@ -91,7 +91,7 @@ def settings_menu():
     )
 
 
-def main():
+def main() -> None:
     """
     The main program.
     """
@@ -102,10 +102,10 @@ def main():
 
     place_canvas()
 
+    settings_menu()
+
     stopwatch = TimeText()
     stopwatch.label.after(1000, stopwatch.update)
-
-    settings_menu()
 
     root.mainloop()
 

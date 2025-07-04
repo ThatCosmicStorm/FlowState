@@ -4,10 +4,12 @@ Contains the functions that run FlowState.
 
 import os
 import tkinter as tk
+from tkinter import ttk
 from datetime import timedelta
 
 PADDING = "-200+200"
 
+session_num = 1
 root = tk.Tk()
 
 
@@ -58,7 +60,20 @@ def play_button() -> tk.Button:
     return button
 
 
+def break_bar() -> ttk.Progressbar:
+    """
+    Displays an empty progress bar.
+    """
+    pb = ttk.Progressbar(
+        root,
+        orient="horizontal",
+        length=300,
+        mode="determinate"
     )
+    pb.place(x=180, y=220, anchor=tk.CENTER)
+
+    return pb
+
 
     )
 
@@ -144,6 +159,8 @@ def main() -> None:
     play_button()
 
     TimeText()
+
+    break_bar()
 
     settings_menu()
 

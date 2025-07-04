@@ -34,10 +34,39 @@ def place_canvas() -> tk.Canvas:
         bg="white",
         highlightthickness=0
     )
-
-    bg.place(x=0, y=0)
+    bg.pack(anchor=tk.CENTER, expand=True)
 
     return bg
+
+
+def play_button(canvas: tk.Canvas):
+    """
+    Displays a functional play button that starts the stopwatch.
+    """
+
+    button = canvas.create_oval(
+        (145, 220),
+        (215, 290),
+        fill="gray"
+    )
+    triangle = canvas.create_polygon(
+        (168, 235),
+        (168, 275),
+        (200, 255),
+        fill="lightgray"
+    )
+
+    canvas.tag_bind(
+        button,
+        "<Button-1>",
+        lambda e: TimeText.first_update(TimeText())
+    )
+
+    canvas.tag_bind(
+        triangle,
+        "<Button-1>",
+        lambda e: TimeText.first_update(TimeText())
+    )
 
 
 class TimeText:
@@ -46,8 +75,10 @@ class TimeText:
     """
     def __init__(self) -> None:
         self.focus_sec = 0
+        self.focused = False
         self.label = tk.Label(
             root,
+            bg="white",
             text="0:00:00",
             font=("Tahoma", 64)
         )
@@ -62,12 +93,26 @@ class TimeText:
         display_time = timedelta(seconds=self.focus_sec)
         return str(display_time)
 
+    def first_update(self) -> None:
+        """
+        Waits one second before updating the time.
+        """
+        self.focused = True
+        self.label.after(1000, self.update)
+
     def update(self) -> None:
         """
         Updates the label to display the new time.
         """
-        self.label.configure(text=self.time_string())
-        self.label.after(1000, self.update)
+        if self.focused:
+            self.label.configure(text=self.time_string())
+            self.label.after(1000, self.update)
+
+    def stop_updates(self) -> None:
+        """
+        Stop the time from updating.
+        """
+        self.focused = False
 
 
 def settings_menu() -> None:
@@ -100,12 +145,13 @@ def main() -> None:
     root.resizable(False, False)
     root.attributes("-topmost", 1)
 
-    place_canvas()
+    canvas = place_canvas()
+
+    play_button(canvas)
+
+    TimeText()
 
     settings_menu()
-
-    stopwatch = TimeText()
-    stopwatch.label.after(1000, stopwatch.update)
 
     root.mainloop()
 

@@ -75,7 +75,19 @@ def break_bar() -> ttk.Progressbar:
     return pb
 
 
+def session_text() -> tk.Label:
+    """
+    Displays basic session info.
+    """
+    label = tk.Label(
+        root,
+        bg="white",
+        text="Focus Session #1",
+        font=("Tahoma", 22)
     )
+    label.place(x=180, y=80, anchor=tk.CENTER)
+
+    return label
 
 
 class TimeText:
@@ -161,6 +173,8 @@ def main() -> None:
     TimeText()
 
     break_bar()
+
+    session_text()
 
     settings_menu()
 

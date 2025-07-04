@@ -39,33 +39,27 @@ def place_canvas() -> tk.Canvas:
     return bg
 
 
-def play_button(canvas: tk.Canvas):
+def play_button() -> tk.Button:
     """
     Displays a functional play button that starts the stopwatch.
     """
 
-    button = canvas.create_oval(
-        (145, 220),
-        (215, 290),
-        fill="gray"
-    )
-    triangle = canvas.create_polygon(
-        (168, 235),
-        (168, 275),
-        (200, 255),
-        fill="lightgray"
+    button = tk.Button(
+        root,
+        text="Start",
+        font="Tahoma",
+        height=1,
+        width=10,
+        command=lambda: TimeText.first_update(TimeText())
     )
 
-    canvas.tag_bind(
-        button,
-        "<Button-1>",
-        lambda e: TimeText.first_update(TimeText())
+    button.place(x=180, y=270, anchor=tk.CENTER)
+
+    return button
+
+
     )
 
-    canvas.tag_bind(
-        triangle,
-        "<Button-1>",
-        lambda e: TimeText.first_update(TimeText())
     )
 
 
@@ -83,7 +77,7 @@ class TimeText:
             font=("Tahoma", 64)
         )
 
-        self.label.place(x=180, y=150, anchor="center")
+        self.label.place(x=180, y=150, anchor=tk.CENTER)
 
     def time_string(self) -> str:
         """
@@ -145,9 +139,9 @@ def main() -> None:
     root.resizable(False, False)
     root.attributes("-topmost", 1)
 
-    canvas = place_canvas()
+    place_canvas()
 
-    play_button(canvas)
+    play_button()
 
     TimeText()
 
